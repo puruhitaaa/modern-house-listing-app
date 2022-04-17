@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { ReactComponent as ArrowRightIcon } from '../../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../../assets/svg/visibilityIcon.svg'
 import { auth } from '../../firebase.config'
@@ -33,7 +34,7 @@ export default function SignIn() {
         navigate('/')
       }
     } catch (error) {
-      console.log(error)
+      toast.error('Bad user credentials.')
     }
   }
 

@@ -16,6 +16,7 @@ import {
   setDoc,
   Timestamp,
 } from 'firebase/firestore'
+import { toast } from 'react-toastify'
 
 type Inputs = {
   name: string
@@ -56,7 +57,7 @@ export default function SignUp() {
 
       navigate('/')
     } catch (error) {
-      console.log(error)
+      toast('Something went wrong, please try again.')
     }
   }
 
