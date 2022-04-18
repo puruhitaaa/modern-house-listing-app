@@ -29,7 +29,6 @@ export default function Profile() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       if (auth.currentUser?.displayName !== data.name) {
-        // Update displayName in firebase
         await updateProfile(auth.currentUser!, {
           displayName: data.name,
         })
