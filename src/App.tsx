@@ -4,6 +4,7 @@ import { Navbar } from './components'
 import PrivateRoute from './helpers/PrivateRoute'
 import {
   CategoryPage,
+  ContactPage,
   CreateListingPage,
   ExplorePage,
   ListingPage,
@@ -35,6 +36,7 @@ export default function App() {
             path='/category/:categoryName/:listingId'
             element={<ListingPage />}
           />
+          <Route path='/contact/:landlordId' element={<ContactPage />} />
         </Routes>
 
         <Navbar />

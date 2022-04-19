@@ -6,8 +6,8 @@ export interface IListing {
   discountedPrice?: number
   furnished?: boolean
   geolocation?: {
-    lat?: string
-    lng?: string
+    lat?: number
+    lng?: number
   }
   imageUrls?: string[]
   location?: string
