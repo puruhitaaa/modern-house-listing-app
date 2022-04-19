@@ -14,7 +14,10 @@ interface Props {
 export default function ListingItem({ listing, id, onDelete }: Props) {
   return (
     <li className='categoryListing'>
-      <Link className='categoryListingLink' to={`/category/${listing.type}`}>
+      <Link
+        className='categoryListingLink'
+        to={`/category/${listing.type}/${id}`}
+      >
         <img
           className='categoryListingImg'
           src={listing.imageUrls![0]}

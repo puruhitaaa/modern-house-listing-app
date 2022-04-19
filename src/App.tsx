@@ -6,6 +6,7 @@ import {
   CategoryPage,
   CreateListingPage,
   ExplorePage,
+  ListingPage,
   OffersPage,
   ProfilePage,
   SignInPage,
@@ -22,7 +23,6 @@ export default function App() {
         <Routes>
           <Route path='/' element={<ExplorePage />} />
           <Route path='/offers' element={<OffersPage />} />
-          <Route path='/category/:categoryName' element={<CategoryPage />} />
           <Route path='/profile' element={<PrivateRoute />}>
             <Route path='/profile' element={<ProfilePage />} />
           </Route>
@@ -30,6 +30,11 @@ export default function App() {
           <Route path='/sign-up' element={<SignUpPage />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/create-listing' element={<CreateListingPage />} />
+          <Route path='/category/:categoryName' element={<CategoryPage />} />
+          <Route
+            path='/category/:categoryName/:listingId'
+            element={<ListingPage />}
+          />
         </Routes>
 
         <Navbar />

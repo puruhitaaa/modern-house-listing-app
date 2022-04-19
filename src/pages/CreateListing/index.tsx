@@ -88,7 +88,7 @@ export default function CreateListing() {
 
     setIsLoading(true)
 
-    if (discountedPrice! >= regularPrice!) {
+    if (regularPrice! >= discountedPrice!) {
       setIsLoading(false)
       toast.error('Discouted price needs to be less than regular price.')
       return
@@ -118,16 +118,15 @@ export default function CreateListing() {
         uploadTask.on(
           'state_changed',
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            toast.info(`Upload is ${progress}% done`)
-
             switch (snapshot.state) {
               case 'paused':
                 console.log('Upload is paused')
                 break
               case 'running':
                 console.log('Upload is running')
+                break
+              case 'success':
+                toast.success('Image has been uploaded.')
                 break
             }
           },
