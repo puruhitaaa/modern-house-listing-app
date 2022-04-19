@@ -4,6 +4,7 @@ import { Navbar } from './components'
 import PrivateRoute from './helpers/PrivateRoute'
 import {
   CategoryPage,
+  CreateListingPage,
   ExplorePage,
   OffersPage,
   ProfilePage,
@@ -28,6 +29,7 @@ export default function App() {
           <Route path='/sign-in' element={<SignInPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/create-listing' element={<CreateListingPage />} />
         </Routes>
 
         <Navbar />

@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { auth, db } from '../../firebase.config'
 import { updateProfile } from 'firebase/auth'
 import { doc, updateDoc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
+import { auth, db } from '../../firebase.config'
+import arrowRightIcon from '../../assets/svg/keyboardArrowRightIcon.svg'
+import homeIcon from '../../assets/svg/homeIcon.svg'
 
 type Inputs = {
   name?: string | null
@@ -50,7 +52,7 @@ export default function Profile() {
   }
 
   return (
-    <div>
+    <div className='pageContainer'>
       <header className='profileHeader'>
         <h1 className='pageHeader'>My Profile</h1>
         <button type='button' className='logOut' onClick={onLogout}>
@@ -95,6 +97,12 @@ export default function Profile() {
             </button>
           </form>
         </div>
+
+        <Link className='createListing' to='/create-listing'>
+          <img src={homeIcon} alt='home' />
+          <p>Sell or rent your home</p>
+          <img src={arrowRightIcon} alt='arrow-right' />
+        </Link>
       </main>
     </div>
   )
