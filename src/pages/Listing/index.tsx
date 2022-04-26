@@ -36,21 +36,19 @@ export default function Listing() {
 
   return !isLoading ? (
     <main>
-      {listing?.imageUrls && (
-        <Swiper slidesPerView={1} pagination={{ clickable: true }}>
-          {listing.imageUrls.map((url) => (
-            <SwiperSlide key={url}>
-              <div
-                style={{
-                  background: `url(${url}) center no-repeat`,
-                  backgroundSize: 'cover',
-                }}
-                className='swiperSlideDiv'
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      )}
+      <Swiper slidesPerView={1} pagination={{ clickable: true }}>
+        {listing?.imageUrls?.map((url) => (
+          <SwiperSlide key={url}>
+            <div
+              style={{
+                background: `url(${url}) center no-repeat`,
+                backgroundSize: 'cover',
+              }}
+              className='swiperSlideDiv'
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       <div
         className='shareIconDiv'

@@ -1,21 +1,40 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { updateProfile } from 'firebase/auth'
-import { doc, updateDoc } from 'firebase/firestore'
+import {
+  doc,
+  updateDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+  DocumentData,
+} from 'firebase/firestore'
 import { toast } from 'react-toastify'
 import { auth, db } from '../../firebase.config'
 import arrowRightIcon from '../../assets/svg/keyboardArrowRightIcon.svg'
 import homeIcon from '../../assets/svg/homeIcon.svg'
+import { IListing } from '../../types/listing'
+import { ListingItem } from '../../components'
 
 type Inputs = {
   name?: string | null
   email?: string | null
 }
 
+type Listing = {
+  id: string
+  data: DocumentData | IListing
+}
+
 export default function Profile() {
   const navigate = useNavigate()
   const btnRef = useRef<HTMLButtonElement>(null)
+  const [listings, setListings] = useState<Listing[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [changeDetails, setChangeDetails] = useState(false)
   const {
     register,
@@ -50,6 +69,48 @@ export default function Profile() {
     auth.signOut()
     navigate('/')
   }
+
+  const onDelete = async (listingId: string) => {
+    if (
+      window.confirm(`Are you sure you want to delete listing ${listingId}?`)
+    ) {
+      const docRef = doc(db, 'listings', listingId)
+      await deleteDoc(docRef)
+
+      setListings((prevState) =>
+        prevState?.filter((listing) => listing.id !== listingId)
+      )
+
+      toast.success(`Successfully deleted listing ${listingId}`)
+    }
+  }
+
+  useEffect(() => {
+    const fetchUserListings = async () => {
+      const listingsRef = collection(db, 'listings')
+      const q = query(
+        listingsRef,
+        where('userRef', '==', auth.currentUser?.uid),
+        orderBy('timestamp', 'desc')
+      )
+
+      const querySnap = await getDocs(q)
+
+      let listings: Listing[] = []
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+
+      setListings(listings)
+      setIsLoading(false)
+    }
+
+    fetchUserListings()
+  }, [])
 
   return (
     <div className='pageContainer'>
@@ -103,6 +164,22 @@ export default function Profile() {
           <p>Sell or rent your home</p>
           <img src={arrowRightIcon} alt='arrow-right' />
         </Link>
+
+        {!isLoading && listings?.length && (
+          <>
+            <p className='listingText'>Your Listings</p>
+            <ul className='listingsList'>
+              {listings.map((listing) => (
+                <ListingItem
+                  key={listing.id}
+                  id={listing.id}
+                  listing={listing.data}
+                  onDelete={() => onDelete(listing.id)}
+                />
+              ))}
+            </ul>
+          </>
+        )}
       </main>
     </div>
   )
