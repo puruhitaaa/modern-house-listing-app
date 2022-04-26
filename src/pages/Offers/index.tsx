@@ -21,8 +21,44 @@ type Listing = {
 
 export default function Offers() {
   const navigate = useNavigate()
-  const [listings, setListings] = useState<Listing[] | null>(null)
+  const [listings, setListings] = useState<Listing[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [lastFetchedListing, setLastFetchedListing] = useState<Listing | null>(
+    null
+  )
+
+  const onFetchMoreListings = async () => {
+    try {
+      const listingsRef = collection(db, 'listings')
+
+      const q = query(
+        listingsRef,
+        where('offer', '==', true),
+        orderBy('timestamp', 'desc'),
+        startAfter(lastFetchedListing),
+        limit(10)
+      )
+
+      const querySnap = await getDocs(q)
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+      setLastFetchedListing(lastVisible)
+
+      const listings: Listing[] = []
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+
+      setListings((prevState) => [...prevState, ...listings])
+      setIsLoading(false)
+    } catch (error) {
+      toast.error('Could not fetch listings')
+    }
+  }
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -37,6 +73,9 @@ export default function Offers() {
         )
 
         const querySnap = await getDocs(q)
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+        setLastFetchedListing(lastVisible)
 
         const listings: Listing[] = []
 
@@ -65,18 +104,29 @@ export default function Offers() {
 
       {isLoading ? (
         <Spinner />
-      ) : listings!.length > 0 ? (
-        <main>
-          <ul className='categoryListings'>
-            {listings?.map((listing) => (
-              <ListingItem
-                key={listing.id}
-                id={listing.id}
-                listing={listing.data}
-              />
-            ))}
-          </ul>
-        </main>
+      ) : listings!.length ? (
+        <>
+          <main>
+            <ul className='categoryListings'>
+              {listings?.map((listing) => (
+                <ListingItem
+                  key={listing.id}
+                  id={listing.id}
+                  listing={listing.data}
+                />
+              ))}
+            </ul>
+          </main>
+
+          <br />
+          <br />
+
+          {lastFetchedListing && (
+            <button className='loadMore' onClick={onFetchMoreListings}>
+              Load More
+            </button>
+          )}
+        </>
       ) : (
         <p>There are no current offers</p>
       )}
