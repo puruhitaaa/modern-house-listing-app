@@ -85,6 +85,8 @@ export default function Profile() {
     }
   }
 
+  const onEdit = (listingId: string) => navigate(`/edit-listing/${listingId}`)
+
   useEffect(() => {
     const fetchUserListings = async () => {
       const listingsRef = collection(db, 'listings')
@@ -165,7 +167,7 @@ export default function Profile() {
           <img src={arrowRightIcon} alt='arrow-right' />
         </Link>
 
-        {!isLoading && listings?.length && (
+        {!isLoading && listings?.length > 0 && (
           <>
             <p className='listingText'>Your Listings</p>
             <ul className='listingsList'>
@@ -175,6 +177,7 @@ export default function Profile() {
                   id={listing.id}
                   listing={listing.data}
                   onDelete={() => onDelete(listing.id)}
+                  onEdit={() => onEdit(listing.id)}
                 />
               ))}
             </ul>

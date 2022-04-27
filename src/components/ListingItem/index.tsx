@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ReactComponent as DeleteIcon } from '../../assets/svg/deleteIcon.svg'
+import { ReactComponent as EditIcon } from '../../assets/svg/editIcon.svg'
 import bedIcon from '../../assets/svg/bedIcon.svg'
 import bathtubIcon from '../../assets/svg/bathtubIcon.svg'
 import { IListing } from '../../types/listing'
@@ -9,9 +10,10 @@ interface Props {
   listing: IListing
   id: string
   onDelete?: (id: string, name: string) => void
+  onEdit?: (listingId: string) => void
 }
 
-export default function ListingItem({ listing, id, onDelete }: Props) {
+export default function ListingItem({ listing, id, onDelete, onEdit }: Props) {
   return (
     <li className='categoryListing'>
       <Link
@@ -60,6 +62,8 @@ export default function ListingItem({ listing, id, onDelete }: Props) {
           onClick={() => onDelete(id, listing.name!)}
         />
       )}
+
+      {onEdit && <EditIcon className='editIcon' onClick={() => onEdit(id)} />}
     </li>
   )
 }
