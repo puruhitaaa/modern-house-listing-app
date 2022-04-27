@@ -36,11 +36,7 @@ export default function Profile() {
   const [listings, setListings] = useState<Listing[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [changeDetails, setChangeDetails] = useState(false)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const { register, handleSubmit } = useForm<Inputs>({
     defaultValues: {
       name: auth.currentUser?.displayName,
       email: auth.currentUser?.email,
