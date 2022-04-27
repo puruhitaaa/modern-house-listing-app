@@ -82,7 +82,6 @@ export default function EditListing() {
     discountedPrice,
     latitude,
     longitude,
-    userRef,
   } = formData
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -235,6 +234,7 @@ export default function EditListing() {
       toast.error("You can't edit others' listing")
       navigate('/')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

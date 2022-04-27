@@ -6,15 +6,11 @@ import { Spinner } from '../../components'
 import { db } from '../../firebase.config'
 import { IUser } from '../../types/users'
 
-type Input = {
-  message?: string
-}
-
 export default function Contact() {
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [landlord, setLandlord] = useState<IUser | null>(null)
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const params = useParams()
 
